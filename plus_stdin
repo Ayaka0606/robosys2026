@@ -3,7 +3,7 @@ import sys
 
 x = 0
 
-for line in sys.stdin:
+for line.rstrip() in sys.stdin:
     try:
         x += int(line)
     except ValueError:
