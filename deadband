@@ -4,12 +4,27 @@
 
 import sys
 
-threshold = float(sys.argv[1])
+if len(sys.argv) != 2:
+    print("Usage: deadband THRESHOLD", file=sys.stderr)
+    sys.exit(1)
 
-for line in sys.stdin:
-    value = float(line)
+try:
+    threshold = float(sys.argv[1])
+    if threshold < 0:
+        raise ValueError
+except ValueError:
+    print("Error: THRESHOLD must be a non-negative number", file=sys.stderr)
+    sys.exit(1)
 
-    if abs(value) < threshold:
-        print(0)
-    else:
-        print(value)
+try:
+    for line in sys.stdin:
+        value = float(line)
+
+        if abs(value) < threshold:
+            print(0)
+        else:
+            print(value)
+
+except ValueError:
+    print("Error: input must contain only numbers", file=sys.stderr)
+    sys.exit(1)
