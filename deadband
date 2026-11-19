@@ -1,0 +1,15 @@
+#!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2026 Ayaka Wakida
+# SPDX-License-Identifier: BSD-3-Clause
+
+import sys
+
+threshold = float(sys.argv[1])
+
+for line in sys.stdin:
+    value = float(line)
+
+    if abs(value) < threshold:
+        print(0)
+    else:
+        print(value)
