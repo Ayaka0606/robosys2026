@@ -1,0 +1,27 @@
+#!/usr/bin/python3
+# SPDX-FileCopyrightText: 2026 Ayaka Wakida
+# SPDX-License-Identifier: BSD-3-Clause
+
+import sys
+
+def tsum(line):
+    try:
+        return int(line)
+    except ValueError:
+        return float(line)
+
+x = 0
+count = 0
+
+try:
+    for line in sys.stdin:
+        x += tsum(line)
+        count += 1
+
+    if count == 0:
+        sys.exit(1)
+
+except ValueError:
+    sys.exit(1)
+
+print(x)
