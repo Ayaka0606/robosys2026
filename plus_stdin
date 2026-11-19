@@ -1,12 +1,16 @@
 #!/usr/bin/python3
+# SPDX-FileCopyrightText: 2026 Ayaka Wakida
 import sys
+
+def tsum(line):
+    try:
+        return int(line)
+    except ValueError:
+        return float(line)
 
 x = 0
 
-for line.rstrip() in sys.stdin:
-    try:
-        x += int(line)
-    except ValueError:
-        x += float(line)
+for line in sys.stdin:
+    x += tsum(line)
 
 print(x)
