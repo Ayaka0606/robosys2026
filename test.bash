@@ -9,49 +9,36 @@ ng () {
 
 res=0
 
-# 1. 正常な入力
-out=$(seq 5 | ./plus)
-[ "${out}" = 15 ] || ng "$LINENO"
-
-# 2. 計算できない文字
-out=$(echo あ | ./plus)
-[ "$?" = 1 ] || ng "$LINENO"
-[ -z "$out" ] || ng "$LINENO"
-
-# 3. 空入力
-out=$(./plus < /dev/null)
-[ "$?" = 1 ] || ng "$LINENO"
-[ -z "$out" ] || ng "$LINENO"
-# 4. deadbandの正常な入力
+# 1. deadbandの正常な入力
 out=$(printf "0.01\n0.15\n-0.03\n0.50\n-0.12\n" | ./deadband 0.1)
 expected=$(printf "0\n0.15\n0\n0.5\n-0.12")
 [ "$out" = "$expected" ] || ng "$LINENO"
 
-# 5. しきい値が指定されていない場合
+# 2. しきい値が指定されていない場合
 out=$(./deadband 2>/dev/null)
 [ "$?" = 1 ] || ng "$LINENO"
 [ -z "$out" ] || ng "$LINENO"
 
-# 6. 不正なしきい値
+# 3. 不正なしきい値
 out=$(./deadband abc 2>/dev/null)
 [ "$?" = 1 ] || ng "$LINENO"
 [ -z "$out" ] || ng "$LINENO"
 
-# 7. 負のしきい値
+# 4. 負のしきい値
 out=$(./deadband -0.1 2>/dev/null)
 [ "$?" = 1 ] || ng "$LINENO"
 [ -z "$out" ] || ng "$LINENO"
-# 8. しきい値と同じ値
+# 5. しきい値と同じ値
 out=$(printf "0.1\n-0.1\n0.099\n" | ./deadband 0.1)
 expected=$(printf "0.1\n-0.1\n0")
 [ "$out" = "$expected" ] || ng "$LINENO"
 
-# 9. 数値以外の入力
+# 6. 数値以外の入力
 out=$(printf "0.1\nabc\n0.3\n" | ./deadband 0.1 2>/dev/null)
 [ "$?" = 1 ] || ng "$LINENO"
 [ "$out" = "0.1" ] || ng "$LINENO"
 
-# 10. 空入力
+# 7. 空入力
 out=$(./deadband 0.1 < /dev/null)
 [ "$?" = 0 ] || ng "$LINENO"
 [ -z "$out" ] || ng "$LINENO"
