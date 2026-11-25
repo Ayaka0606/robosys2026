@@ -41,5 +41,19 @@ out=$(./deadband abc 2>/dev/null)
 out=$(./deadband -0.1 2>/dev/null)
 [ "$?" = 1 ] || ng "$LINENO"
 [ -z "$out" ] || ng "$LINENO"
+# 8. しきい値と同じ値
+out=$(printf "0.1\n-0.1\n0.099\n" | ./deadband 0.1)
+expected=$(printf "0.1\n-0.1\n0")
+[ "$out" = "$expected" ] || ng "$LINENO"
+
+# 9. 数値以外の入力
+out=$(printf "0.1\nabc\n0.3\n" | ./deadband 0.1 2>/dev/null)
+[ "$?" = 1 ] || ng "$LINENO"
+[ "$out" = "0.1" ] || ng "$LINENO"
+
+# 10. 空入力
+out=$(./deadband 0.1 < /dev/null)
+[ "$?" = 0 ] || ng "$LINENO"
+[ -z "$out" ] || ng "$LINENO"
 [ "${res}" = 0 ] && echo OK
 exit $res
